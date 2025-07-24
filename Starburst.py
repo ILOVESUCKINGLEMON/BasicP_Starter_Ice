@@ -9,10 +9,11 @@ i=1
 #Damage each Weapons
 wood_stick_damage = 0
 
-
-
 print("Slime // HP: 65 // Level: Easy")
-Decision1 = int(input("Fight press (1)/Run press (2)"))
+#First Decision
+Decision1 = int(input("Fight(1) / Run(2)"))
+
+#Weapons choosing
 if Decision1 == 1 :
     print("-----โปรดเลือกอาวุธ-----")
     print("Wood stick|5 atk ")
