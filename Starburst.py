@@ -1,194 +1,154 @@
 from random import randint
-
-#ตัวแปร
+import time
+# ตัวแปร
 Decision1 = 0
 Weapons = 0
 max_hit = 0
 monhp = 75
-i=1
+i = 1
 playerhp = 100
-mon_dmg_range = (10,25)
+mon_dmg_range = (10, 25)
 mondmg = 0
 keepfighting = True
-#Damage each Weapons
-damage_range = 0
-damage = 0
-#หนีพ้นไหม
-Yourluck = (1,10)
-Iamtheflash = 1
-#กดออกเกม
+hit = 0
 
-Exit = False    
+# Damage each weapon
+damage_range = (0, 0)
+damage = 0
+
+# หนีพ้นไหม
+Yourluck = (1, 10)
+Iamtheflash = 1
+
+# ออกจากเกม
+Exit = False
 Confirmation = False
 
-while True :
-    print("Slime // HP: 75 // Level: Easy")
-        #First Decision
-    Decision1 = int(input("Fight(1) / Run(2)"))
-    if Decision1 == 2 :
-        Iamtheflash = randint(*Yourluck)
-        if Iamtheflash == 1 :
-            print (" คุณหนีพ้นแล้ว ")
-            break
-        else :
-            print (" NOWHERE TO RUN!!!")
-    else :
-        break
+# ------------------- First Decision -------------------
+print("\n🟣 คุณเดินเข้ามาในป่าลึกลับ...")
+time.sleep(2)
+print("...ทันใดนั้น สิ่งมีชีวิตลึกลับก็กระเด้งเด้งเข้ามา!!!")
+time.sleep(2)
+print("\n🧪 พบเจอศัตรู: [ Slime สีม่วงเหนียวหนืด!! ]")
+print("📊 HP: 75 | 🎯 ระดับความยาก: Easy\n")
+time.sleep(1)
 
-#Weapons choosing
-if Decision1 == 1 :
-    while Exit == False  :
-        print("\n----- โปรดเลือกอาวุธ -----")
-        print("1. ไม้กากๆ          | 3-12 damage | ตีได้ 5 ครั้ง")
-        print("2. โน้ตบุ๊คAsus       | 5-9 damage | ตีได้ 3 ครั้ง")
-        print("3. ไม้แขวนเสื้อของแม่  | 2-20 damage | ตีได้ 1 ครั้ง")
-        print("           หากต้องการออกกด 4            ")
-        
-        Weapons = int(input("กิ่งไม้กากๆ (1)/โน้ตบุ๊คAsus (2)/ไม้แขวนเสื้อของแม่ (3)")) 
-        
-        if Weapons == 4 :
-            Exit == True
+while True:
+    print("คุณจะทำอย่างไร ?\n")
+    print("⚔️  1. สู้แบบไม่กลัวตาย!")    
+    print("🏃  2. หนีตายก่อนละกัน!")
+    print("-- กด 3 เพื่อออกจากเกม --")
+    try:
+        Decision1 = int(input(">> กรุณาเลือก (1,2 หรือ 3): "))
+        if Decision1 == 3:
+            print("ลาก่อนนักผจญภัย...")
+            Exit = True
             break
-        elif Weapons == 1 and Exit == False:
-            max_hit = 5
-            damage_range = (3,12)
-            break
-        elif Weapons == 2 and Exit == False:
-            max_hit = 3
-            damage_range = (5,9)
-            break
-        elif Weapons == 3 and Exit == False:
-            max_hit = 1
-            damage_range = (2,20)
+        if Decision1 == 2:
+            Iamtheflash = randint(*Yourluck)
+            if Iamtheflash >= 8:
+                print("\n💨 คุณหนีพ้นแล้ว!! กลับบ้านไปกอดหมาได้ ✨")
+                exit()
+            else:
+                print("\n🚫 ไม่! Slime พุ่งมาขวางไว้!!")
+                time.sleep(2)
+                print("คุณไม่มีทางเลือก ต้องสู้เท่านั้น!\n")
+                break
+        elif Decision1 == 1:
+            print("\n🗡️ คุณตัดสินใจสู้กับ Slime อย่างกล้าหาญ!")
+            time.sleep(2)
             break
         else:
-            print("กรุณาเลือก 1, 2 หรือ 3 เท่านั้น")
-        
-        
+            print("❗ กรุณาเลือก 1 หรือ 2 เท่านั้น\n")
+    except:
+            print("⚠️ กรุณากรอกตัวเลข 1 หรือ 2 เท่านั้น\n")
+# ------------------- Weapon Selection -------------------
+while Exit == False:
+    print("\n----- โปรดเลือกอาวุธ -----")
+    print("1. ไม้กากๆ          | 3-12 damage | ตีได้ 5 ครั้ง")
+    print("2. โน้ตบุ๊คAsus       | 5-9 damage  | ตีได้ 3 ครั้ง")
+    print("3. ไม้แขวนเสื้อของแม่  | 2-20 damage | ตีได้ 1 ครั้ง")
+    print("4. ออกจากเกม")
+    Weapons = int(input("เลือกอาวุธ (1/2/3) หรือออก (4): "))
 
-
-#Fight
-#Wood stick
-if Weapons == 1 :
-    while True:
-        i = 1 #รีเซ็ทค่า i
-        hit = int(input("ตีกี่ครั้ง ? (สูงสุด 5 ครั้ง) **กดเลข 8 เพื่อออกจากเกม"))
-        if hit == 8 :
-            break
-        if 1 <= hit <= 5 :
-            while i <= hit and monhp > 0 :
-                damage = randint(*damage_range)
-                print(f"Hit ครั้งที่ {i} |", damage , "damage")
-                monhp -= damage
-                print(monhp)
-                print(f"เลือด Slime เหลือ |", monhp , "hp")
-                i += 1
-                
-            if monhp <= 0:
-                    print("คุณชนะแล้ว... CONGRATULATIONS!!")
-                    break
-            
-            if monhp > 0:
-                mondmg = randint(*mon_dmg_range)
-                playerhp -= mondmg
-                print(f"\nมอนสเตอร์โจมตีคุณ!! คุณได้รับความเสียหาย {mondmg} damage")
-                print(f"เลือดคุณเหลือ {playerhp} HP\n")
-
-                if playerhp <= 0:
-                    print("คุณตายแล้ว... Game Over")
-                    break
-            
-        else :
-            print ("กรุณากรอกเลข 1-5")
-    
-            
-            
-
-           
-
-            
-#Laptop
-if Weapons == 2 :
-    while True:
-        i = 1 #รีเซ็ทค่า i
-        hit = int(input("ตีกี่ครั้ง ? (สูงสุด 3 ครั้ง) **กดเลข 8 เพื่อออกจากเกม"))
-        if hit == 8 :
-            break
-        if 1 <= hit <= 3 :
-            while i <= hit and monhp > 0 :
-                damage = randint(*damage_range)
-                print(f"Hit ครั้งที่ {i} |", damage , "damage")
-                monhp -= damage
-                print(monhp)
-                print(f"เลือด Slime เหลือ |", monhp , "hp")
-                i += 1
-                
-            if monhp <= 0:
-                    print("คุณชนะแล้ว... CONGRATULATIONS!!")
-                    break
-            
-            if monhp > 0:
-                mondmg = randint(*mon_dmg_range)
-                playerhp -= mondmg
-                print(f"\nมอนสเตอร์โจมตีคุณ!! คุณได้รับความเสียหาย {mondmg} damage")
-                print(f"เลือดคุณเหลือ {playerhp} HP\n")
-
-                if playerhp <= 0:
-                    print("คุณตายแล้ว... Game Over")
-                    break
-            
-        else :
-            print ("กรุณากรอกเลข 1-3")
-
-#Excalibur
-if Weapons == 3 :
-    while True:
-        hit = (input(" กด 1 เพื่อโจมตี | กด 2 เพื่อลองวิ่งหนี"))
-        if hit == 2 :
-            Iamtheflash = randint(*Yourluck)
-            if Iamtheflash >= 8 :
-                break
-        elif hit == 1 :
+    if Weapons == 4:
+        Confirmation = input("แน่ใจหรือไม่ว่าจะออก? (y/n): ")
+        if Confirmation.lower() == "y":
+            print("ลาก่อนนักผจญภัย...")
+            exit()
+        else:
             continue
-        else :
-            hit == 3
+    elif Weapons == 1:
+        max_hit = 5
+        damage_range = (3, 12)
+        break
+    elif Weapons == 2:
+        max_hit = 3
+        damage_range = (5, 9)
+        break
+    elif Weapons == 3:
+        max_hit = 1
+        damage_range = (2, 20)
+        break
+    else:
+        print("กรุณาเลือก 1, 2, 3 หรือ 4 เท่านั้น")
 
-        if hit == 1 :
-            while i <= hit and monhp > 0 :
-                damage = randint(*damage_range)
-                print(f"Hit ครั้งที่ {i} |", damage , "damage")
-                monhp -= damage
-                print(monhp)
-                print(f"เลือด Slime เหลือ |", monhp , "hp")
-                i += 1
-       
-            if monhp <= 0:
-                    print("คุณชนะแล้ว... CONGRATULATIONS!!")
-                    break
-        if hit == 3 :    
-            if monhp > 0:
-                mondmg = randint(*mon_dmg_range)
-                playerhp -= mondmg
-                print(f"\nมอนสเตอร์โจมตีคุณ!! คุณได้รับความเสียหาย {mondmg} damage")
-                print(f"เลือดคุณเหลือ {playerhp} HP\n")
+# ------------------- Battle -------------------
+while monhp > 0 and playerhp > 0:
+    if Weapons in [1, 2]:
+        try:
+            hit = int(input(f"\nตีกี่ครั้ง? (สูงสุด {max_hit} ครั้ง) **กดเลข 8 เพื่อออกจากเกม: "))
+            if hit == 8:
+                break
+            if not (1 <= hit <= max_hit):
+                print(f"กรุณากรอกเลข 1 - {max_hit}")
+                continue
+        except:
+            print("กรอกตัวเลขเท่านั้น")
+            continue
 
-                if playerhp <= 0:
-                    print("คุณตายแล้ว... Game Over")
-                    break
-            
-        else :
-            print ("กรุณากรอกเลข 1 หรือ 2")
+        for i in range(1, hit + 1):
+            damage = randint(*damage_range)
+            print(f"Hit ครั้งที่ {i} | {damage} damage")
+            monhp -= damage
+            if monhp < 0:
+                monhp = 0
+            print(f"เลือด Slime เหลือ | {monhp} HP")
+            if monhp == 0:
+                break
 
-elif Exit == True :
-    while True :
-        Confirmation =  str(input("are you sure to leave? (y/n)"))
-        if Confirmation == "y":
-            break
-        elif Confirmation == "n" :
-            Exit == False
-        else :
-            print ("กรุณากรอกแค่ y กับ n")
+    elif Weapons == 3:
+        choice = input("\nกด 1 เพื่อโจมตี | กด 2 เพื่อลองหนี: ")
+        if choice == "2":
+            Iamtheflash = randint(*Yourluck)
+            if Iamtheflash >= 8:
+                print("คุณหนีพ้น!!")
+                break
+            else:
+                print("คุณหนีไม่รอด!! สู้ต่อไป...")
+        elif choice == "1":
+            damage = randint(*damage_range)
+            print(f"Hit | {damage} damage")
+            monhp -= damage
+            if monhp < 0:
+                monhp = 0
+            print(f"เลือด Slime เหลือ | {monhp} HP")
+        else:
+            print("กรุณากดแค่ 1 หรือ 2 เท่านั้น")
+            continue
 
+    if monhp <= 0:
+        print("\nคุณชนะแล้ว... CONGRATULATIONS!! 🎉")
+        break
 
-    
+    # Slime โจมตี
+    mondmg = randint(*mon_dmg_range)
+    playerhp -= mondmg
+    if playerhp < 0:
+        playerhp = 0
+    print(f"\nมอนสเตอร์โจมตีคุณ!! คุณได้รับความเสียหาย {mondmg} damage")
+    print(f"เลือดคุณเหลือ {playerhp} HP\n")
 
+    if playerhp <= 0:
+        print("คุณตายแล้ว... Game Over ☠️")
+        break
